@@ -19,9 +19,9 @@ jobs:
       uses: Elskom/setup-latest-dotnet@main
       with:
         VERSION_MAJOR: '6'
-        VERSION_BAND: '2xx'
+        VERSION_BAND: '4xx'
 
-    - name: Restore, Build, and pack
+    - name: Restore, Build, and Pack
       uses: Elskom/build-dotnet@main
       with:
         RESTORE: false
