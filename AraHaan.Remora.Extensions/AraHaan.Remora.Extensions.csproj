@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageTags>Remora.Discord Remora.Commands</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/AraHaan/remora-extensions</PackageProjectUrl>
+    <Description>
+A package that extends Remora.Discord with additional functionality.
+
+Extensions:
+ - AddRoles (extends IDiscordRestGuildAPI to allow adding discord roles in bulk)
+ - RemoveRoles (extends IDiscordRestGuildAPI to allow removing discord roles in bulk)
+ - RunBotConsoleAsync (extends IHostBuilder to allow an cleanup operation to be done on application shutdown, requires a type to derive from IBotServiceConfigurator)
+ - DownloadAsync (extends DownloadAsync to download a discord attackment to a stream)
+ - DownloadStringAsync (extends DownloadAsync to download a discord attackment to a string)
+ - DownloadToFileAsync (extends DownloadAsync to download a discord attackment to a file)
+ - AddDiscordGatewayClientOptions (extends IServiceCollection to allow adding the gateway client options using a factory)
+ - Configure&lt;T&gt; (extends IServiceProvider to allow the client options to be configured after the service provider is created)
+
+Types:
+ - AraHaan.Remora.Extensions.Hosting.Host (A special host class that makes the IBotServiceConfigurator system work)
+   - Note: When using this type ensure that "using Microsoft.Extensions.Hosting" is not used otherwise it will conflict. I have told Microsoft about my need to extend this but they said that they do not think it's needed.
+ - AraHaan.Remora.Extensions.Hosting.IBotServiceConfigurator (An interface for types to provide code that should run before configure of the services, code to configure the services, and code to run after shutdown of the generic host aka Microsoft.Extensions.Hosting)
+    </Description>
+    <Authors>AraHaan</Authors>
+    <Company>AraHaan</Company>
+    <Copyright>Copyright (c) 2022</Copyright>
+    <LangVersion>preview</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Using Include="Microsoft.Extensions.DependencyInjection" />
+    <Using Include="Microsoft.Extensions.Hosting" />
+    <Using Include="Microsoft.Extensions.Options" />
+    <Using Include="Remora.Discord.API.Abstractions.Objects" />
+    <Using Include="Remora.Discord.API.Abstractions.Rest" />
+    <Using Include="Remora.Discord.Gateway" />
+    <Using Include="Remora.Rest.Core" />
+    <Using Include="Remora.Results" />
+    <Using Include="System.Diagnostics.CodeAnalysis" />
+    <Using Include="System.Reflection" />
+    <Using Include="System.Runtime.Versioning" />
+    <Using Include="System.Text" />
+    <Using Include="$(MSBuildProjectName).Hosting" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="*" />
+    <PackageReference Include="Remora.Discord.Gateway" Version="*" />
+    <PackageReference Include="DotNet.ReproducibleBuilds" Version="*" />
+  </ItemGroup>
+
+</Project>
