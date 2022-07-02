@@ -7,11 +7,17 @@ public static class DiscordRestGuildAPIExtensions
 {
     /// <summary>
     /// Adds multiple roles in bulk to a user in a guild.
+    /// <br></br>
+    /// if roles is empty after the user's existing roles are added to it,
+    /// then no requests are sent to Discord.
     /// </summary>
     /// <remarks>
-    /// Posts 1 API Request to Discord.
+    /// Posts 0~1 API Requests to Discord.
     /// </remarks>
-    public static async ValueTask AddRoles(
+    /// <returns>
+    /// A rest result which may or may not have succeeded.
+    /// </returns>
+    public static async Task<Result> AddRoles(
         this IDiscordRestGuildAPI discordRestGuildAPI,
         Snowflake guildID,
         IGuildMember user,
@@ -25,17 +31,24 @@ public static class DiscordRestGuildAPIExtensions
                        select role);
         if (roles.Count > 0)
         {
-            await discordRestGuildAPI.ModifyGuildMemberAsync(guildID, user.User.Value.ID, roles: roles, reason: reason, ct: ct).ConfigureAwait(false);
+            return await discordRestGuildAPI.ModifyGuildMemberAsync(guildID, user.User.Value.ID, roles: roles, reason: reason, ct: ct).ConfigureAwait(false);
         }
+
+        return Result.FromSuccess();
     }
 
     /// <summary>
     /// Removes multiple roles in bulk from a user in a guild.
+    /// <br></br>
+    /// if roles is empty, then no requests are sent to Discord.
     /// </summary>
     /// <remarks>
-    /// Posts 1 API Request to Discord.
+    /// Posts 0~1 API Requests to Discord.
     /// </remarks>
-    public static async ValueTask RemoveRoles(
+    /// <returns>
+    /// A rest result which may or may not have succeeded.
+    /// </returns>
+    public static async Task<Result> RemoveRoles(
         this IDiscordRestGuildAPI discordRestGuildAPI,
         Snowflake guildID,
         IGuildMember user,
@@ -51,7 +64,9 @@ public static class DiscordRestGuildAPIExtensions
 
         if (roles.Count > 0)
         {
-            await discordRestGuildAPI.ModifyGuildMemberAsync(guildID, user.User.Value.ID, roles: keepRoles, reason: reason, ct: ct).ConfigureAwait(false);
+            return await discordRestGuildAPI.ModifyGuildMemberAsync(guildID, user.User.Value.ID, roles: keepRoles, reason: reason, ct: ct).ConfigureAwait(false);
         }
+
+        return Result.FromSuccess();
     }
 }

@@ -28,12 +28,15 @@ Types:
     <Authors>AraHaan</Authors>
     <Company>AraHaan</Company>
     <Copyright>Copyright (c) 2022</Copyright>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
+    <Using Include="Microsoft.Extensions.Configuration" />
     <Using Include="Microsoft.Extensions.DependencyInjection" />
     <Using Include="Microsoft.Extensions.Hosting" />
+    <Using Include="Microsoft.Extensions.Logging" />
     <Using Include="Microsoft.Extensions.Options" />
     <Using Include="Remora.Discord.API.Abstractions.Objects" />
     <Using Include="Remora.Discord.API.Abstractions.Rest" />
@@ -45,9 +48,16 @@ Types:
     <Using Include="System.Runtime.Versioning" />
     <Using Include="System.Text" />
     <Using Include="$(MSBuildProjectName).Hosting" />
+    <PackageReference Include="IDisposableAnalyzers" Version="*-*">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="DotNet.ReproducibleBuilds" Version="*">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="*" />
     <PackageReference Include="Remora.Discord.Gateway" Version="*" />
-    <PackageReference Include="DotNet.ReproducibleBuilds" Version="*" />
   </ItemGroup>
 
 </Project>
