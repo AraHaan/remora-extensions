@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Version>2.0.0</Version>
     <PackageTags>Remora.Discord Remora.Commands</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/AraHaan/remora-extensions</PackageProjectUrl>
@@ -18,13 +19,17 @@ Extensions:
  - DownloadStringAsync (extends DownloadAsync to download a discord attackment to a string)
  - DownloadToFileAsync (extends DownloadAsync to download a discord attackment to a file)
  - AddDiscordGatewayClientOptions (extends IServiceCollection to allow adding the gateway client options using a factory)
+ - AddSlashUpdateService (extends IServiceCollection to allow adding the SlashUpdateService background service to the service collection)
  - Configure&lt;T&gt; (extends IServiceProvider to allow the client options to be configured after the service provider is created)
 
 Types:
  - AraHaan.Remora.Extensions.Hosting.Host (A special host class that makes the IBotServiceConfigurator system work)
    - Note: When using this type ensure that "using Microsoft.Extensions.Hosting" is not used otherwise it will conflict. I have told Microsoft about my need to extend this but they said that they do not think it's needed.
  - AraHaan.Remora.Extensions.Hosting.IBotServiceConfigurator (An interface for types to provide code that should run before configure of the services, code to configure the services, and code to run after shutdown of the generic host aka Microsoft.Extensions.Hosting)
+ - AraHaan.Remora.Extensions.Options.SlashUpdateServiceOptions (An options type used to configure the SlashUpdateService)
+ - AraHaan.Remora.Extensions.Services.SlashUpdateService (An BackgroundService used to update Discord slash commands)
     </Description>
+    <PackageReleaseNotes>Added SlashUpdateService, SlashUpdateServiceOptions, and AddSlashUpdateService extension method.</PackageReleaseNotes>
     <Authors>AraHaan</Authors>
     <Company>AraHaan</Company>
     <Copyright>Copyright (c) 2022</Copyright>
@@ -40,6 +45,7 @@ Types:
     <Using Include="Microsoft.Extensions.Options" />
     <Using Include="Remora.Discord.API.Abstractions.Objects" />
     <Using Include="Remora.Discord.API.Abstractions.Rest" />
+    <Using Include="Remora.Discord.Commands.Services" />
     <Using Include="Remora.Discord.Gateway" />
     <Using Include="Remora.Rest.Core" />
     <Using Include="Remora.Results" />
@@ -48,6 +54,10 @@ Types:
     <Using Include="System.Runtime.Versioning" />
     <Using Include="System.Text" />
     <Using Include="$(MSBuildProjectName).Hosting" />
+    <Using Include="$(MSBuildProjectName).Options" />
+    <Using Include="$(MSBuildProjectName).Properties" />
+    <Using Include="$(MSBuildProjectName).Services" />
+    <AdditionalFiles Include="Properties\Resources.resx" />
     <PackageReference Include="IDisposableAnalyzers" Version="*-*">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -56,8 +66,11 @@ Types:
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.ResxSourceGenerator" Version="*-*">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="*" />
-    <PackageReference Include="Remora.Discord.Gateway" Version="*" />
+    <PackageReference Include="Remora.Discord.Commands" Version="*" />
   </ItemGroup>
 
 </Project>

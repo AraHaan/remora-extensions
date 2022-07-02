@@ -21,6 +21,7 @@ public interface IBotServiceConfigurator
     /// <summary>
     /// Code to run after the application shuts down.
     /// </summary>
+    /// <param name="options">The options to the <see cref="SlashUpdateService"/> for when that service triggered the shutdown.</param>
     [RequiresPreviewFeatures]
-    public static abstract void AfterApplicationShutdown();
+    public static abstract void AfterApplicationShutdown(SlashUpdateServiceOptions options);
 }

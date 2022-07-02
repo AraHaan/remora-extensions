@@ -24,6 +24,18 @@ public static class ServiceCollectionExtensions
     }
 
     /// <summary>
+    /// Adds the slash update service to the service collection.
+    /// </summary>
+    /// <param name="serviceCollection">The service collection.</param>
+    /// <param name="configureOptions">The options configure action.</param>
+    /// <returns>The <see cref="IServiceCollection"/> used for chaining.</returns>
+    public static IServiceCollection AddSlashUpdateService(
+        this IServiceCollection serviceCollection,
+        Action<SlashUpdateServiceOptions> configureOptions)
+        => serviceCollection.Configure(configureOptions)
+            .AddHostedService<SlashUpdateService>();
+
+    /// <summary>
     /// Reversed Engineered Configure method for configuring types after an <see cref="IServiceProvider"/> is created.
     /// </summary>
     /// <typeparam name="TOptions">The options to configure.</typeparam>
@@ -34,5 +46,6 @@ public static class ServiceCollectionExtensions
         this IServiceProvider _,
         Action<TOptions> configureOptions)
         where TOptions : class
-        => new ConfigureNamedOptions<TOptions>(Options.DefaultName, configureOptions);
+        => new ConfigureNamedOptions<TOptions>(
+            Microsoft.Extensions.Options.Options.DefaultName, configureOptions);
 }

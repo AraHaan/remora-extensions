@@ -23,7 +23,9 @@ public static class HostBuilderExtensions
         CancellationToken cancellationToken = default)
         where TServiceConfigurator : class, IBotServiceConfigurator
     {
-        await hostBuilder.RunConsoleAsync(cancellationToken).ConfigureAwait(false);
-        TServiceConfigurator.AfterApplicationShutdown();
+        using var host = hostBuilder.UseConsoleLifetime().Build();
+        var options = host.Services.GetRequiredService<SlashUpdateServiceOptions>();
+        await host.RunAsync(cancellationToken).ConfigureAwait(false);
+        TServiceConfigurator.AfterApplicationShutdown(options);
     }
 }
