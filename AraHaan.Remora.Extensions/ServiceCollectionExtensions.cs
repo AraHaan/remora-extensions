@@ -27,12 +27,19 @@ public static class ServiceCollectionExtensions
     /// Adds the slash update service to the service collection.
     /// </summary>
     /// <param name="serviceCollection">The service collection.</param>
-    /// <param name="configureOptions">The options configure action.</param>
+    /// <param name="guildSnowflakeFactory">The factory to use to create the <see cref="Snowflake"/> for the slash update service.</param>
     /// <returns>The <see cref="IServiceCollection"/> used for chaining.</returns>
     public static IServiceCollection AddSlashUpdateService(
         this IServiceCollection serviceCollection,
-        Action<SlashUpdateServiceOptions> configureOptions)
-        => serviceCollection.Configure(configureOptions)
+        Func<IServiceProvider, Snowflake> guildSnowflakeFactory)
+        => serviceCollection
+            .AddSingleton(
+                serviceProvider =>
+                {
+                    var guildId = guildSnowflakeFactory(serviceProvider);
+                    return serviceProvider.Configure<SlashUpdateServiceOptions>(
+                        o => o.Guild = guildId);
+                })
             .AddHostedService<SlashUpdateService>();
 
     /// <summary>
