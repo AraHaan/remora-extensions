@@ -24,7 +24,7 @@ public static class HostBuilderExtensions
         where TServiceConfigurator : class, IBotServiceConfigurator
     {
         using var host = hostBuilder.UseConsoleLifetime().Build();
-        var options = host.Services.GetRequiredService<SlashUpdateServiceOptions>();
+        var options = host.Services.GetRequiredService<IOptions<SlashUpdateServiceOptions>>().Value;
         await host.RunAsync(cancellationToken).ConfigureAwait(false);
         TServiceConfigurator.AfterApplicationShutdown(options);
     }
