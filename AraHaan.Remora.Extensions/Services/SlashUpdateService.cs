@@ -14,23 +14,28 @@ public sealed class SlashUpdateService : BackgroundService
     /// <param name="appLifetime">The application lifetime.</param>
     /// <param name="slashService">The Discord Slash Service.</param>
     /// <param name="options">The service options.</param>
+    /// <param name="configurator">The configurator.</param>
     public SlashUpdateService(
         ILogger<SlashUpdateService> logger,
         IHostApplicationLifetime appLifetime,
         SlashService slashService,
-        SlashUpdateServiceOptions options)
+        IOptions<SlashUpdateServiceOptions> options,
+        BotServiceConfiguratorBase configurator)
     {
         _logger = logger;
         AppLifetime = appLifetime;
         SlashService = slashService;
-        Options = options;
+        Options = options.Value;
+        Configurator = configurator;
     }
 
-    internal IHostApplicationLifetime AppLifetime { get; private set; }
+    private IHostApplicationLifetime AppLifetime { get; set; }
 
-    internal SlashService SlashService { get; private set; }
+    private SlashService SlashService { get; set; }
 
-    internal SlashUpdateServiceOptions Options { get; private set; }
+    private SlashUpdateServiceOptions Options { get; set; }
+
+    private BotServiceConfiguratorBase Configurator { get; set; }
 
     /// <inheritdoc />
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -45,6 +50,7 @@ public sealed class SlashUpdateService : BackgroundService
                 Resources.ErrorSlashCommandsNotSupported!,
                 checkSlashSupport.Error.Message)}";
             _logger.LogError(Resources.ErrorSlashCommandsNotSupported!, checkSlashSupport.Error.Message);
+            Configurator.AtSlashUpdateErrorApplicationShutdown(Options);
             AppLifetime.StopApplication();
         }
         else
@@ -58,6 +64,7 @@ public sealed class SlashUpdateService : BackgroundService
                     Resources.ErrorUpdatingSlashCommands!,
                     updateSlash.Error.Message)}";
                 _logger.LogError(Resources.ErrorUpdatingSlashCommands!, updateSlash.Error.Message);
+                Configurator.AtSlashUpdateErrorApplicationShutdown(Options);
                 AppLifetime.StopApplication();
             }
             _logger.LogInformation("Slash commands list updated.");

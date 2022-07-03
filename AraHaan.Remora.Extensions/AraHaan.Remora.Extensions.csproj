@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>2.2.0</Version>
+    <Version>3.0.0</Version>
     <PackageTags>Remora.Discord Remora.Commands</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/AraHaan/remora-extensions</PackageProjectUrl>
@@ -25,11 +25,11 @@ Extensions:
 Types:
  - AraHaan.Remora.Extensions.Hosting.Host (A special host class that makes the IBotServiceConfigurator system work)
    - Note: When using this type ensure that "using Microsoft.Extensions.Hosting" is not used otherwise it will conflict. I have told Microsoft about my need to extend this but they said that they do not think it's needed.
- - AraHaan.Remora.Extensions.Hosting.IBotServiceConfigurator (An interface for types to provide code that should run before configure of the services, code to configure the services, and code to run after shutdown of the generic host aka Microsoft.Extensions.Hosting)
+ - AraHaan.Remora.Extensions.Hosting.BotServiceConfiguratorBase (A base class for types to provide code that should run before configure of the services, code to configure the services, and code to run after shutdown of the generic host aka Microsoft.Extensions.Hosting)
  - AraHaan.Remora.Extensions.Options.SlashUpdateServiceOptions (An options type used to configure the SlashUpdateService)
  - AraHaan.Remora.Extensions.Services.SlashUpdateService (An BackgroundService used to update Discord slash commands)
     </Description>
-    <PackageReleaseNotes>Fixed the RunBotConsoleAsync extension method.</PackageReleaseNotes>
+    <PackageReleaseNotes>Fixed the SlashUpdateService extension method, added a new BotServiceConfiguratorBase class, deleted the IBotServiceConfigurator interface, and added a breaking changes to CreateBotDefaultBuilder, RunBotConsoleAsync.</PackageReleaseNotes>
     <Authors>AraHaan</Authors>
     <Company>AraHaan</Company>
     <Copyright>Copyright (c) 2022</Copyright>

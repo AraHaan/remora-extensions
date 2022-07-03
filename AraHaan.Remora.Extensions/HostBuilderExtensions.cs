@@ -11,6 +11,7 @@ public static class HostBuilderExtensions
     /// When shut down starts, closes and flushes the serilog loggers.
     /// </summary>
     /// <param name="hostBuilder">The <see cref="IHostBuilder" /> to configure.</param>
+    /// <param name="configurator">The configurator instance.</param>
     /// <param name="cancellationToken">A <see cref="CancellationToken"/> that can be used to cancel the console.</param>
     /// <returns>A <see cref="Task"/> that only completes when the token is triggered or shutdown is triggered.</returns>
     [RequiresPreviewFeatures]
@@ -20,12 +21,11 @@ public static class HostBuilderExtensions
     [UnsupportedOSPlatform("tvos")]
     public static async Task RunBotConsoleAsync<TServiceConfigurator>(
         this IHostBuilder hostBuilder,
+        TServiceConfigurator configurator,
         CancellationToken cancellationToken = default)
-        where TServiceConfigurator : class, IBotServiceConfigurator
+        where TServiceConfigurator : BotServiceConfiguratorBase
     {
-        using var host = hostBuilder.UseConsoleLifetime().Build();
-        var options = host.Services.GetRequiredService<IOptions<SlashUpdateServiceOptions>>().Value;
-        await host.RunAsync(cancellationToken).ConfigureAwait(false);
-        TServiceConfigurator.AfterApplicationShutdown(options);
+        await hostBuilder.RunConsoleAsync(cancellationToken).ConfigureAwait(false);
+        configurator.AfterApplicationShutdown();
     }
 }

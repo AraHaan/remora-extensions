@@ -1,27 +1,29 @@
 ﻿namespace AraHaan.Remora.Extensions.Hosting;
 
 /// <summary>
-/// Interface to define a class to use that will configure the services to use for the Bot.
+/// Base class for a configurator to use to configure services to use for the Bot.
 /// </summary>
-public interface IBotServiceConfigurator
+public abstract class BotServiceConfiguratorBase
 {
     /// <summary>
     /// Code to run before <see cref="ConfigureBotServices"/> is run.
     /// </summary>
     /// <param name="entryAssembly">The entry assebly to the bot application.</param>
-    [RequiresPreviewFeatures]
-    public static abstract void BeforeConfigure(Assembly entryAssembly);
+    public abstract void BeforeConfigure(Assembly entryAssembly);
 
     /// <summary>
     /// Configures the services to use for the bot.
     /// </summary>
-    [RequiresPreviewFeatures]
-    public static abstract void ConfigureBotServices(IHostBuilder hostBuilder);
+    public abstract void ConfigureBotServices(IHostBuilder hostBuilder);
 
     /// <summary>
     /// Code to run after the application shuts down.
     /// </summary>
+    public abstract void AfterApplicationShutdown();
+
+    /// <summary>
+    /// Code to run at application shutdown due to an error with updating slash commands.
+    /// </summary>
     /// <param name="options">The options to the <see cref="SlashUpdateService"/> for when that service triggered the shutdown.</param>
-    [RequiresPreviewFeatures]
-    public static abstract void AfterApplicationShutdown(SlashUpdateServiceOptions options);
+    public abstract void AtSlashUpdateErrorApplicationShutdown(SlashUpdateServiceOptions options);
 }
