@@ -22,13 +22,14 @@ public static class Host
     ///   </list>
     /// </remarks>
     /// <returns>The initialized <see cref="IHostBuilder"/>.</returns>
-    [RequiresPreviewFeatures]
     public static IHostBuilder CreateBotDefaultBuilder<TServiceConfigurator>(
-        Assembly entryAssembly,
-        TServiceConfigurator configurator)
-        where TServiceConfigurator : BotServiceConfiguratorBase
+        Assembly entryAssembly)
+        where TServiceConfigurator : BotServiceConfiguratorBase, new()
     {
-        configurator.BeforeConfigure(entryAssembly);
+        using var configurator = new TServiceConfigurator()
+        {
+            ShouldDispose = false,
+        };
         var hostBuilder = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder()
             .UseContentRoot(Path.GetDirectoryName(entryAssembly.Location)!)
             .ConfigureServices((_, collection) =>
@@ -36,6 +37,7 @@ public static class Host
                     ServiceDescriptor.Singleton<
                         BotServiceConfiguratorBase,
                         TServiceConfigurator>((_) => configurator)));
+        configurator.BeforeConfigure(entryAssembly);
         configurator.ConfigureBotServices(hostBuilder);
         return hostBuilder;
     }
