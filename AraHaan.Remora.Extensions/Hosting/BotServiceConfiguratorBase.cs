@@ -21,6 +21,12 @@ public abstract class BotServiceConfiguratorBase : IDisposable
     public abstract void ConfigureBotServices(IHostBuilder hostBuilder);
 
     /// <summary>
+    /// Code to run after an <see cref="IServiceProvider" /> is built.
+    /// </summary>
+    /// <param name="serviceProvider">The built <see cref="IServiceProvider" />.</param>
+    public abstract void AfterBuildServiceProvider(IServiceProvider serviceProvider);
+
+    /// <summary>
     /// Code to run after the application shuts down.
     /// </summary>
     public abstract void AfterApplicationShutdown();
