@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>5.0.1</Version>
+    <Version>5.0.2</Version>
     <PackageTags>Remora.Discord Remora.Commands</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/AraHaan/remora-extensions</PackageProjectUrl>
@@ -29,7 +29,7 @@ Types:
  - AraHaan.Remora.Extensions.Options.SlashUpdateServiceOptions (An options type used to configure the SlashUpdateService)
  - AraHaan.Remora.Extensions.Services.SlashUpdateService (An BackgroundService used to update Discord slash commands)
     </Description>
-    <PackageReleaseNotes>Pin Microsoft.Extensions.Hosting to 6.0.0.</PackageReleaseNotes>
+    <PackageReleaseNotes>Update dependencies.</PackageReleaseNotes>
     <Authors>AraHaan</Authors>
     <Company>AraHaan</Company>
     <Copyright>Copyright (c) 2022</Copyright>
