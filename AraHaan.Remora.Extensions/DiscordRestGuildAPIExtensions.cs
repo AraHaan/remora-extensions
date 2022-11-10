@@ -29,12 +29,9 @@ public static class DiscordRestGuildAPIExtensions
         roles.AddRange(from role in user.Roles
                        where !roles.Contains(role)
                        select role);
-        if (roles.Count > 0)
-        {
-            return await discordRestGuildAPI.ModifyGuildMemberAsync(guildID, user.User.Value.ID, roles: roles, reason: reason, ct: ct).ConfigureAwait(false);
-        }
-
-        return Result.FromSuccess();
+        return roles.Count > 0
+            ? await discordRestGuildAPI.ModifyGuildMemberAsync(guildID, user.User.Value.ID, roles: roles, reason: reason, ct: ct).ConfigureAwait(false)
+            : Result.FromSuccess();
     }
 
     /// <summary>
@@ -62,11 +59,8 @@ public static class DiscordRestGuildAPIExtensions
             _ = keepRoles.Remove(role);
         }
 
-        if (roles.Count > 0)
-        {
-            return await discordRestGuildAPI.ModifyGuildMemberAsync(guildID, user.User.Value.ID, roles: keepRoles, reason: reason, ct: ct).ConfigureAwait(false);
-        }
-
-        return Result.FromSuccess();
+        return roles.Count > 0
+            ? await discordRestGuildAPI.ModifyGuildMemberAsync(guildID, user.User.Value.ID, roles: keepRoles, reason: reason, ct: ct).ConfigureAwait(false)
+            : Result.FromSuccess();
     }
 }

@@ -40,34 +40,20 @@ public sealed class SlashUpdateService : BackgroundService
     /// <inheritdoc />
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        _logger.LogInformation("Checking for slash commands support.");
-
         // Tokens should be considered secret data, and never hard-coded.
-        var checkSlashSupport = SlashService.SupportsSlashCommands();
-        if (!checkSlashSupport.IsSuccess)
+        _logger.LogInformation("About to update slash commands list.");
+        var updateSlash = await SlashService.UpdateSlashCommandsAsync(
+            Options.Guild, ct: default).ConfigureAwait(false);
+        if (!updateSlash.IsSuccess)
         {
             Options.SlashUpdateErrorMessage = $"Error: {string.Format(
-                Resources.ErrorSlashCommandsNotSupported!,
-                checkSlashSupport.Error.Message)}";
-            _logger.LogError(Resources.ErrorSlashCommandsNotSupported!, checkSlashSupport.Error.Message);
+                Resources.ErrorUpdatingSlashCommands!,
+                updateSlash.Error.Message)}";
+            _logger.LogError(Resources.ErrorUpdatingSlashCommands!, updateSlash.Error.Message);
             Configurator.AtSlashUpdateErrorApplicationShutdown(Options);
             AppLifetime.StopApplication();
         }
-        else
-        {
-            _logger.LogInformation("About to update slash commands list.");
-            var updateSlash = await SlashService.UpdateSlashCommandsAsync(
-                Options.Guild, ct: default).ConfigureAwait(false);
-            if (!updateSlash.IsSuccess)
-            {
-                Options.SlashUpdateErrorMessage = $"Error: {string.Format(
-                    Resources.ErrorUpdatingSlashCommands!,
-                    updateSlash.Error.Message)}";
-                _logger.LogError(Resources.ErrorUpdatingSlashCommands!, updateSlash.Error.Message);
-                Configurator.AtSlashUpdateErrorApplicationShutdown(Options);
-                AppLifetime.StopApplication();
-            }
-            _logger.LogInformation("Slash commands list updated.");
-        }
+
+        _logger.LogInformation("Slash commands list updated.");
     }
 }
